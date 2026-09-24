@@ -151,6 +151,7 @@ ul.routine-edit li{display:flex;justify-content:space-between;align-items:center
   <header>
     <h1>GATE prep log</h1>
     <p id="sub" class="muted sub"></p>
+    <p id="storeMsg" class="small muted" role="status"></p>
   </header>
 
   <section id="stats" class="stats" aria-label="Summary"></section>
@@ -225,7 +226,7 @@ function defaultRoutine(){
     {id:'r4',label:'Formula and notes review'}
   ];
 }
-function fresh(){return {start:todayStr(),exam:'',routine:defaultRoutine(),days:{}};}
+function fresh(){return {start:todayStr(),exam:'',routine:defaultRoutine(),days:{},savedAt:null};}
 function normalize(s){
   var f=fresh();
   s=s&&typeof s==='object'?s:{};
@@ -233,37 +234,64 @@ function normalize(s){
     start:isDateStr(s.start)?s.start:f.start,
     exam:isDateStr(s.exam)?s.exam:'',
     routine:Array.isArray(s.routine)?s.routine.filter(function(t){return t&&t.id&&t.label;}):f.routine,
-    days:(s.days&&typeof s.days==='object')?s.days:{}
+    days:(s.days&&typeof s.days==='object')?s.days:{},
+    savedAt:(typeof s.savedAt==='number')?s.savedAt:null
   };
+}
+var loadInfo='fresh';
+var storageBad=false;
+var savedThisSession=false;
+function writeStore(obj){
+  var json=JSON.stringify(obj);
+  localStorage.setItem(KEY,json);
+  if(localStorage.getItem(KEY)!==json)throw new Error('write did not stick');
 }
 function load(){
   try{
     var raw=localStorage.getItem(KEY);
-    if(raw)return normalize(JSON.parse(raw));
-  }catch(e){}
+    if(raw){var st=normalize(JSON.parse(raw));loadInfo='existing';return st;}
+  }catch(e){storageBad=true;}
   var f=fresh();
-  try{localStorage.setItem(KEY,JSON.stringify(f));}catch(e){}
+  try{writeStore(f);}catch(e){storageBad=true;}
   return f;
 }
 var state=load();
 var selected=clampSel(todayStr());
 var savedTimer=null;
 
+function stamp(ts){
+  var d=new Date(ts),h=d.getHours();
+  return d.getDate()+' '+MON[d.getMonth()]+', '+(h%12||12)+':'+pad(d.getMinutes())+(h<12?' am':' pm');
+}
+function storeStatus(){
+  var el=$('#storeMsg');
+  if(!el)return;
+  if(storageBad){
+    el.className='small saved err';
+    el.textContent='This browser is not keeping your data, so entries will be lost when you close the page. Try a normal window in another browser, and use the backup text in Settings.';
+    return;
+  }
+  el.className='small muted';
+  if(state.savedAt)el.textContent=(savedThisSession?'Saved in this browser at ':'Loaded your saved log, last saved ')+stamp(state.savedAt)+'.';
+  else el.textContent='No saved log found in this browser, so this is a fresh start. Type something and it will be saved here.';
+}
 function flash(msg,isErr){
   var el=$('#savedMsg');
   if(!el)return;
   el.textContent=msg;
   el.className='saved'+(isErr?' err':'');
-  clearTimeout(savedTimer);
-  if(!isErr)savedTimer=setTimeout(function(){el.textContent='';},1800);
 }
 function save(){
   try{
-    localStorage.setItem(KEY,JSON.stringify(state));
-    flash('Saved');
+    state.savedAt=Date.now();
+    writeStore(state);
+    storageBad=false;savedThisSession=true;
+    flash('Saved at '+stamp(state.savedAt));
   }catch(e){
+    storageBad=true;
     flash('Could not save in this browser. Copy the backup text from Settings.',true);
   }
+  storeStatus();
 }
 function clampSel(k){return k<state.start?state.start:k;}
 
@@ -630,6 +658,8 @@ $('#reset').addEventListener('click',function(){
 
 syncSettings();
 renderAll();
+storeStatus();
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(function(){});}catch(e){}
 })();
 </script>
 </body>
