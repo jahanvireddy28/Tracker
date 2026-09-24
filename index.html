@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GATE prep log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F7; --grid:#DDE5F0; --paper:#FAFBFD; --ink:#16233F; --muted:#56637F;
+  --line:#C5CFE0; --accent:#2447B8; --on-accent:#FFFFFF; --mock:#C23A2E; --ok:#1F7A4D;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1626; --grid:#1A2440; --paper:#172038; --ink:#E6ECF8; --muted:#93A0BD;
+    --line:#2B3757; --accent:#7C9BFF; --on-accent:#0F1626; --mock:#FF7A6B; --ok:#5BD08F;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1626; --grid:#1A2440; --paper:#172038; --ink:#E6ECF8; --muted:#93A0BD;
+  --line:#2B3757; --accent:#7C9BFF; --on-accent:#0F1626; --mock:#FF7A6B; --ok:#5BD08F;
+  color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{
+  margin:0;
+  font-family:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  color:var(--ink);
+  line-height:1.5;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:28px 28px;
+}
+h1,h2,.num{font-family:'Bricolage Grotesque','Atkinson Hyperlegible',system-ui,sans-serif;letter-spacing:-0.01em}
+h1{font-size:clamp(1.9rem,5vw,2.7rem);line-height:1.1;margin:0 0 6px;font-weight:700}
+h2{font-size:1.25rem;margin:0 0 6px;font-weight:700}
+p{margin:0}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.wrap{max-width:1100px;margin:0 auto;padding:22px 16px 56px}
+.sub{max-width:60ch}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:22px 0}
+.stat{border-left:3px solid var(--accent);padding:2px 0 2px 12px;background:color-mix(in srgb,var(--paper) 88%,transparent)}
+.stat .num{font-size:1.9rem;font-weight:700;line-height:1.15}
+
+.cols{display:grid;gap:18px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:920px){.cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}}
+.stack{display:grid;gap:18px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px}
+.card.tight{border-radius:6px}
+
+.daynav{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.daytitle{flex:1;min-width:0}
+.daytitle h2{margin:0}
+.btn{
+  font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:6px;
+  min-height:44px;padding:0 14px;cursor:pointer;
+}
+.btn:hover{border-color:var(--accent)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent);font-weight:700}
+.btn.small{min-height:36px;padding:0 10px;font-size:.9rem}
+.btn.danger{color:var(--mock);border-color:var(--mock)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.banner{border-left:3px solid var(--mock);padding:6px 10px;margin:0 0 14px;background:color-mix(in srgb,var(--mock) 9%,transparent);border-radius:0 6px 6px 0}
+.banner strong{color:var(--mock)}
+
+fieldset{border:0;margin:0 0 16px;padding:0;min-width:0}
+legend,.lbl{font-weight:700;padding:0;margin-bottom:6px;display:block}
+label.f{display:block;margin-bottom:10px}
+label.f span{display:block;font-size:.9rem;color:var(--muted);margin-bottom:3px}
+input[type=text],input[type=number],input[type=date],textarea{
+  font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:6px;
+  padding:9px 10px;width:100%;min-height:44px;
+}
+textarea{resize:vertical;min-height:88px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.hoursrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+#hours{
+  font-family:'Bricolage Grotesque','Atkinson Hyperlegible',system-ui,sans-serif;
+  font-size:2.2rem;font-weight:700;text-align:center;width:6.5rem;padding:2px 4px;min-height:56px;
+}
+.chk{display:flex;gap:10px;align-items:center;min-height:44px;cursor:pointer}
+.chk input{width:22px;height:22px;accent-color:var(--accent);flex:none}
+
+.saved{min-height:1.4em;font-size:.9rem;color:var(--ok)}
+.saved.err{color:var(--mock)}
+
+.sheetgrid{display:grid;grid-template-columns:2.6rem repeat(7,minmax(0,1fr));gap:8px 4px;align-items:center;margin:14px 0 10px}
+.wd{text-align:center;font-size:.85rem;color:var(--muted)}
+.wd.sun{color:var(--mock);font-weight:700}
+.mo{font-size:.85rem;color:var(--muted)}
+.l1{background:color-mix(in srgb,var(--accent) 22%,transparent)}
+.l2{background:color-mix(in srgb,var(--accent) 45%,transparent)}
+.l3{background:color-mix(in srgb,var(--accent) 80%,var(--paper))}
+.l4{background:var(--accent)}
+.bub{
+  aspect-ratio:1;width:100%;max-width:40px;justify-self:center;border-radius:50%;
+  border:1.5px solid var(--line);background:transparent;color:var(--ink);font:inherit;font-size:.8rem;
+  cursor:pointer;padding:0;position:relative;
+}
+.bub.l1{background:color-mix(in srgb,var(--accent) 22%,transparent)}
+.bub.l2{background:color-mix(in srgb,var(--accent) 45%,transparent)}
+.bub.l3{background:color-mix(in srgb,var(--accent) 80%,var(--paper));color:var(--on-accent)}
+.bub.l4{background:var(--accent);color:var(--on-accent)}
+.bub.sun{border-radius:9px;border:2px solid var(--mock)}
+.bub.ck::after{content:'';position:absolute;top:-5px;right:-5px;width:11px;height:11px;border-radius:50%;background:var(--mock);border:2px solid var(--paper)}
+.bub.today{font-weight:700;text-decoration:underline}
+.bub.sel{outline:2px solid var(--ink);outline-offset:2px}
+.bub:disabled{opacity:.28;cursor:default}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.85rem;color:var(--muted)}
+.legend span.it{display:inline-flex;align-items:center;gap:6px}
+.sw{display:inline-block;width:14px;height:14px;border-radius:50%;border:1.5px solid var(--line)}
+.sw.sq{border-radius:4px;border:2px solid var(--mock)}
+.sw.dot{border:0;background:var(--mock);width:10px;height:10px}
+
+svg{display:block;width:100%;height:auto;margin:8px 0 18px}
+svg .axis{stroke:var(--line);stroke-width:1}
+svg .bar{fill:var(--accent)}
+svg .mockbar{fill:var(--mock)}
+svg text{font-family:inherit;fill:var(--muted);font-size:11px}
+svg text.val{fill:var(--ink);font-weight:700}
+
+details{margin-top:18px}
+summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
+.settings-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin:8px 0 14px}
+ul.routine-edit{list-style:none;margin:0 0 10px;padding:0}
+ul.routine-edit li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:4px 0;border-bottom:1px solid var(--line)}
+.addrow{display:flex;gap:8px}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+#backup{min-height:110px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem}
+@media (prefers-reduced-motion:no-preference){.btn,.bub{transition:border-color .12s, background-color .12s}}
+</style>
+</head>
+<body>
+<noscript>This tracker needs JavaScript turned on.</noscript>
+<main class="wrap">
+  <header>
+    <h1>GATE prep log</h1>
+    <p id="sub" class="muted sub"></p>
+  </header>
+
+  <section id="stats" class="stats" aria-label="Summary"></section>
+
+  <div class="cols">
+    <section id="day" class="card" aria-label="Daily log"></section>
+    <div class="stack">
+      <section id="sheet" class="card"></section>
+      <section id="charts" class="card"></section>
+    </div>
+  </div>
+
+  <details class="card tight" id="settings">
+    <summary>Settings, routine and backup</summary>
+    <div class="settings-grid">
+      <label class="f"><span>Prep start date</span><input type="date" id="startDate"></label>
+      <label class="f"><span>Exam date (optional, shows a countdown)</span><input type="date" id="examDate"></label>
+    </div>
+
+    <p class="lbl">Daily routine items</p>
+    <ul id="routineEdit" class="routine-edit"></ul>
+    <div class="addrow">
+      <input type="text" id="newTask" placeholder="Add a routine item" aria-label="New routine item">
+      <button type="button" class="btn" id="addTask">Add</button>
+    </div>
+
+    <p class="lbl" style="margin-top:20px">Backup</p>
+    <p class="muted small">Everything is saved in this browser only. Clearing site data or switching device loses it. Copy the backup text somewhere safe, and paste it back here to restore.</p>
+    <textarea id="backup" aria-label="Backup text" spellcheck="false"></textarea>
+    <div class="btnrow">
+      <button type="button" class="btn" id="showBackup">Show backup text</button>
+      <button type="button" class="btn" id="copyBackup">Copy</button>
+      <button type="button" class="btn" id="restoreBackup">Restore from text</button>
+      <button type="button" class="btn danger" id="reset">Erase all data</button>
+    </div>
+    <p id="backupMsg" class="small muted" role="status"></p>
+  </details>
+</main>
+
+<script>
+(function(){
+'use strict';
+
+var KEY='gate-prep-log-v1';
+var DEFAULT_START='2026-09-24';
+var DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function $(s,r){return (r||document).querySelector(s);}
+function pad(n){return String(n).padStart(2,'0');}
+function fmt(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function parse(s){var p=s.split('-').map(Number);return new Date(p[0],p[1]-1,p[2]);}
+function addDays(d,n){return new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);}
+function diffDays(a,b){
+  return Math.round((Date.UTC(b.getFullYear(),b.getMonth(),b.getDate())-Date.UTC(a.getFullYear(),a.getMonth(),a.getDate()))/864e5);
+}
+function todayStr(){return fmt(new Date());}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function longDate(d){return DAYS[d.getDay()]+', '+d.getDate()+' '+MON[d.getMonth()]+' '+d.getFullYear();}
+function shortDate(d){return d.getDate()+' '+MON[d.getMonth()];}
+function fmtH(n){return String(Math.round(n*10)/10);}
+function num(v){if(v===''||v==null)return null;var x=parseFloat(v);return isNaN(x)?null:x;}
+function pct(s,t){return (s==null||!(t>0))?null:s/t*100;}
+function isDateStr(s){return typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s);}
+
+/* ---------- state ---------- */
+function defaultRoutine(){
+  return [
+    {id:'r1',label:'Concept study'},
+    {id:'r2',label:'Practice problems'},
+    {id:'r3',label:'Revise yesterday'},
+    {id:'r4',label:'Formula and notes review'}
+  ];
+}
+function fresh(){return {start:todayStr(),exam:'',routine:defaultRoutine(),days:{}};}
+function normalize(s){
+  var f=fresh();
+  s=s&&typeof s==='object'?s:{};
+  return {
+    start:isDateStr(s.start)?s.start:f.start,
+    exam:isDateStr(s.exam)?s.exam:'',
+    routine:Array.isArray(s.routine)?s.routine.filter(function(t){return t&&t.id&&t.label;}):f.routine,
+    days:(s.days&&typeof s.days==='object')?s.days:{}
+  };
+}
+function load(){
+  try{
+    var raw=localStorage.getItem(KEY);
+    if(raw)return normalize(JSON.parse(raw));
+  }catch(e){}
+  var f=fresh();
+  try{localStorage.setItem(KEY,JSON.stringify(f));}catch(e){}
+  return f;
+}
+var state=load();
+var selected=clampSel(todayStr());
+var savedTimer=null;
+
+function flash(msg,isErr){
+  var el=$('#savedMsg');
+  if(!el)return;
+  el.textContent=msg;
+  el.className='saved'+(isErr?' err':'');
+  clearTimeout(savedTimer);
+  if(!isErr)savedTimer=setTimeout(function(){el.textContent='';},1800);
+}
+function save(){
+  try{
+    localStorage.setItem(KEY,JSON.stringify(state));
+    flash('Saved');
+  }catch(e){
+    flash('Could not save in this browser. Copy the backup text from Settings.',true);
+  }
+}
+function clampSel(k){return k<state.start?state.start:k;}
+
+function blank(){
+  return {hours:0,done:[],quiz:{topic:'',score:null,total:10},mock:{name:'',score:null,total:100,notes:''},notes:''};
+}
+function getDay(k){
+  var s=state.days[k]||{};
+  var b=blank();
+  return {
+    hours:s.hours>0?s.hours:0,
+    done:Array.isArray(s.done)?s.done:[],
+    quiz:Object.assign(b.quiz,s.quiz||{}),
+    mock:Object.assign(b.mock,s.mock||{}),
+    notes:s.notes||''
+  };
+}
+function ensure(k){var d=getDay(k);state.days[k]=d;return d;}
+function hoursOf(k){return getDay(k).hours;}
+
+/* ---------- stats ---------- */
+function computeStats(){
+  var t=todayStr(),total=0,quizP=[],lastMock=null;
+  Object.keys(state.days).sort().forEach(function(k){
+    if(k<state.start)return;
+    var x=getDay(k);
+    total+=x.hours;
+    var q=pct(x.quiz.score,x.quiz.total);
+    if(q!==null)quizP.push(q);
+    var m=pct(x.mock.score,x.mock.total);
+    if(m!==null)lastMock={date:k,p:m};
+  });
+  var now=parse(t);
+  var mon=addDays(now,-((now.getDay()+6)%7));
+  var week=0;
+  for(var i=0;i<7;i++){
+    var k2=fmt(addDays(mon,i));
+    if(k2>=state.start)week+=hoursOf(k2);
+  }
+  var d=t,streak=0;
+  if(!(hoursOf(d)>0))d=fmt(addDays(parse(d),-1));
+  while(d>=state.start&&hoursOf(d)>0){streak++;d=fmt(addDays(parse(d),-1));}
+  var avg=quizP.length?quizP.reduce(function(a,b){return a+b;},0)/quizP.length:null;
+  return {total:total,week:week,streak:streak,avg:avg,lastMock:lastMock};
+}
+
+/* ---------- render ---------- */
+function renderHeader(){
+  var now=parse(todayStr()),start=parse(state.start),n=diffDays(start,now),parts=[];
+  parts.push(n>=0?'Day '+(n+1)+' of prep.':'Prep starts in '+(-n)+' day'+(-n===1?'':'s')+'.');
+  var off=(7-now.getDay())%7,nm=addDays(now,off);
+  parts.push(off===0?'Today is a mock test day.':'Next mock test: Sunday '+shortDate(nm)+', in '+off+' day'+(off===1?'':'s')+'.');
+  if(state.exam){
+    var e=diffDays(now,parse(state.exam));
+    if(e>0)parts.push(e+' days to the exam.');
+    else if(e===0)parts.push('Exam day.');
+  }
+  $('#sub').textContent=parts.join(' ');
+}
+
+function renderStats(){
+  var s=computeStats();
+  var items=[
+    [fmtH(s.total)+'h','Total prep hours'],
+    [fmtH(s.week)+'h','This week'],
+    [s.streak+(s.streak===1?' day':' days'),'Current streak'],
+    [s.avg==null?'None':Math.round(s.avg)+'%','Average quiz score'],
+    [s.lastMock?Math.round(s.lastMock.p)+'%':'None',s.lastMock?'Last mock, '+shortDate(parse(s.lastMock.date)):'No mock logged yet']
+  ];
+  $('#stats').innerHTML=items.map(function(it){
+    return '<div class="stat"><div class="num">'+esc(it[0])+'</div><div class="muted small">'+esc(it[1])+'</div></div>';
+  }).join('');
+}
+
+function renderDay(){
+  var k=selected,dt=parse(k),dd=getDay(k),sun=dt.getDay()===0,t=todayStr();
+  var n=diffDays(parse(state.start),dt)+1;
+  var status=k===t?'Today, day '+n+' of prep':(k>t?'Upcoming, day '+n+' of prep':'Day '+n+' of prep');
+  var done=new Set(dd.done);
+  var routine=state.routine.map(function(r){
+    return '<label class="chk"><input type="checkbox" data-task="'+esc(r.id)+'"'+(done.has(r.id)?' checked':'')+'><span>'+esc(r.label)+'</span></label>';
+  }).join('')||'<p class="muted small">No routine items. Add some in Settings.</p>';
+
+  var block;
+  if(sun){
+    block=
+      '<div class="banner"><strong>Mock test day.</strong> Log your result below.</div>'+
+      '<fieldset><legend>Mock test</legend>'+
+        '<label class="f"><span>Test name or syllabus covered</span><input type="text" id="mName" value="'+esc(dd.mock.name)+'"></label>'+
+        '<div class="two">'+
+          '<label class="f"><span>Marks scored (can be negative)</span><input type="number" inputmode="decimal" step="any" id="mScore" value="'+(dd.mock.score==null?'':esc(dd.mock.score))+'"></label>'+
+          '<label class="f"><span>Out of</span><input type="number" inputmode="decimal" step="any" id="mTotal" value="'+(dd.mock.total==null?'':esc(dd.mock.total))+'"></label>'+
+        '</div>'+
+        '<label class="f"><span>Weak areas to fix this week</span><textarea id="mNotes">'+esc(dd.mock.notes)+'</textarea></label>'+
+      '</fieldset>';
+  }else{
+    block=
+      '<fieldset><legend>Daily quiz</legend>'+
+        '<label class="f"><span>Topic</span><input type="text" id="qTopic" value="'+esc(dd.quiz.topic)+'"></label>'+
+        '<div class="two">'+
+          '<label class="f"><span>Score</span><input type="number" inputmode="decimal" step="any" id="qScore" value="'+(dd.quiz.score==null?'':esc(dd.quiz.score))+'"></label>'+
+          '<label class="f"><span>Out of</span><input type="number" inputmode="decimal" step="any" id="qTotal" value="'+(dd.quiz.total==null?'':esc(dd.quiz.total))+'"></label>'+
+        '</div>'+
+      '</fieldset>';
+  }
+
+  $('#day').innerHTML=
+    '<div class="daynav">'+
+      '<button type="button" class="btn" data-nav="-1"'+(k<=state.start?' disabled':'')+'>Prev</button>'+
+      '<div class="daytitle"><h2>'+esc(longDate(dt))+'</h2><p class="muted small">'+esc(status)+'</p></div>'+
+      '<button type="button" class="btn" data-nav="1">Next</button>'+
+    '</div>'+
+    (k!==t&&t>=state.start?'<div class="btnrow" style="margin-top:0"><button type="button" class="btn small" data-today="1">Jump to today</button></div>':'')+
+    '<fieldset><label class="lbl" for="hours">Hours of prep</label>'+
+      '<div class="hoursrow">'+
+        '<button type="button" class="btn" data-add="-0.5" aria-label="Subtract half an hour">-0.5</button>'+
+        '<input type="number" inputmode="decimal" id="hours" min="0" max="24" step="0.5" value="'+esc(dd.hours)+'">'+
+        '<button type="button" class="btn" data-add="0.5" aria-label="Add half an hour">+0.5</button>'+
+        '<button type="button" class="btn" data-add="1" aria-label="Add one hour">+1</button>'+
+      '</div>'+
+    '</fieldset>'+
+    '<fieldset><legend>Routine</legend>'+routine+'</fieldset>'+
+    block+
+    '<label class="f"><span>Notes for the day</span><textarea id="notes">'+esc(dd.notes)+'</textarea></label>'+
+    '<div id="savedMsg" class="saved" role="status" aria-live="polite"></div>';
+}
+
+function level(h){return h<=0?0:h<2?1:h<4?2:h<6?3:4;}
+
+function renderSheet(){
+  var start=parse(state.start);
+  var gs=addDays(start,-((start.getDay()+6)%7));
+  var now=todayStr();
+  var weeks=26;
+  if(state.exam){
+    var e=parse(state.exam);
+    weeks=Math.min(60,Math.max(4,Math.ceil(diffDays(gs,e)/7)+1));
+  }
+  var h='<h2>Prep sheet</h2><p class="muted small">Each bubble is a day. Darker means more hours. Tap a day to open it.</p>';
+  h+='<div class="sheetgrid" role="group" aria-label="Prep calendar"><span></span>';
+  ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].forEach(function(d){
+    h+='<span class="wd'+(d==='Sun'?' sun':'')+'">'+d+'</span>';
+  });
+  for(var w=0;w<weeks;w++){
+    var mon=addDays(gs,w*7),label='',i,c;
+    for(i=0;i<7;i++){c=addDays(mon,i);if(c.getDate()===1){label=MON[c.getMonth()];break;}}
+    if(!label&&w===0)label=MON[mon.getMonth()];
+    h+='<span class="mo">'+label+'</span>';
+    for(i=0;i<7;i++){
+      c=addDays(mon,i);
+      var k=fmt(c),off=k<state.start,dd=getDay(k),sun=c.getDay()===0;
+      var cls=['bub','l'+level(dd.hours)];
+      if(sun)cls.push('sun');
+      if(sun&&dd.mock.score!=null)cls.push('ck');
+      if(k===now)cls.push('today');
+      if(k===selected)cls.push('sel');
+      h+='<button type="button" class="'+cls.join(' ')+'" data-day="'+k+'"'+(off?' disabled':'')+
+        ' aria-label="'+esc(longDate(c)+', '+fmtH(dd.hours)+' hours'+(sun?', mock test day':''))+'"'+
+        (k===now?' aria-current="date"':'')+'>'+c.getDate()+'</button>';
+    }
+  }
+  h+='</div>';
+  h+='<div class="legend">'+
+    '<span class="it"><span class="sw"></span>no hours</span>'+
+    '<span class="it"><span class="sw l1"></span>under 2h</span>'+
+    '<span class="it"><span class="sw l2"></span>2 to 4h</span>'+
+    '<span class="it"><span class="sw l3"></span>4 to 6h</span>'+
+    '<span class="it"><span class="sw l4"></span>6h or more</span>'+
+    '<span class="it"><span class="sw sq"></span>Sunday mock test</span>'+
+    '<span class="it"><span class="sw dot"></span>mock result logged</span>'+
+  '</div>';
+  $('#sheet').innerHTML=h;
+}
+
+function bars(items,max,fmtv,label){
+  var W=360,H=160,padB=24,padT=18,n=items.length,gap=8;
+  var bw=Math.min(36,(W-16-gap*(n-1))/n);
+  var total=n*bw+(n-1)*gap,x0=(W-total)/2;
+  var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(label)+'">';
+  s+='<line class="axis" x1="0" x2="'+W+'" y1="'+(H-padB)+'" y2="'+(H-padB)+'"/>';
+  items.forEach(function(it,i){
+    var x=x0+i*(bw+gap);
+    var hh=(H-padB-padT)*Math.max(0,it.v)/max;
+    var y=H-padB-hh;
+    s+='<rect class="'+(it.cls||'bar')+'" x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+hh.toFixed(1)+'" rx="3"/>';
+    var v=fmtv(it);
+    if(v)s+='<text class="val" x="'+(x+bw/2).toFixed(1)+'" y="'+(y-4).toFixed(1)+'" text-anchor="middle">'+esc(v)+'</text>';
+    s+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle">'+esc(it.label)+'</text>';
+  });
+  return s+'</svg>';
+}
+
+function weekly(){
+  var start=parse(state.start);
+  var gs=addDays(start,-((start.getDay()+6)%7));
+  var now=parse(todayStr());
+  var cur=Math.max(0,Math.floor(diffDays(gs,now)/7));
+  var from=Math.max(0,cur-9),out=[];
+  for(var w=from;w<=cur;w++){
+    var h=0;
+    for(var i=0;i<7;i++){
+      var k=fmt(addDays(gs,w*7+i));
+      if(k>=state.start)h+=hoursOf(k);
+    }
+    out.push({label:'W'+(w+1),v:h});
+  }
+  return out;
+}
+
+function renderCharts(){
+  var wk=weekly();
+  var maxH=Math.max(10,Math.max.apply(null,wk.map(function(x){return x.v;})));
+  var mocks=[];
+  Object.keys(state.days).sort().forEach(function(k){
+    if(k<state.start)return;
+    var m=getDay(k).mock,p=pct(m.score,m.total);
+    if(p!==null)mocks.push({v:Math.min(100,Math.max(0,p)),p:p,label:shortDate(parse(k)),cls:'mockbar'});
+  });
+  var last=mocks.slice(-10);
+  $('#charts').innerHTML=
+    '<h2>Hours per week</h2>'+
+    '<p class="muted small">Weeks run Monday to Sunday. W1 is the week you started.</p>'+
+    bars(wk,maxH,function(it){return it.v?fmtH(it.v):'';},'Hours studied per week')+
+    '<h2>Mock test scores</h2>'+
+    (last.length
+      ?bars(last,100,function(it){return Math.round(it.p)+'%';},'Mock test scores in percent')
+      :'<p class="muted">No mock scores yet. Log one on a Sunday and it shows up here.</p>');
+}
+
+function renderRoutineEdit(){
+  $('#routineEdit').innerHTML=state.routine.map(function(t){
+    return '<li><span>'+esc(t.label)+'</span><button type="button" class="btn small" data-rm="'+esc(t.id)+'">Remove</button></li>';
+  }).join('')||'<li class="muted">No routine items yet.</li>';
+}
+function syncSettings(){
+  $('#startDate').value=state.start;
+  $('#examDate').value=state.exam||'';
+}
+function renderAll(){
+  renderHeader();renderStats();renderDay();renderSheet();renderCharts();renderRoutineEdit();
+}
+function changed(){
+  save();renderStats();renderSheet();renderCharts();
+}
+
+/* ---------- events ---------- */
+$('#day').addEventListener('input',function(e){
+  var t=e.target,day=ensure(selected);
+  if(t.id==='hours'){var v=num(t.value);day.hours=(v===null||v<0)?0:Math.min(24,v);}
+  else if(t.dataset&&t.dataset.task){
+    var s=new Set(day.done);
+    if(t.checked)s.add(t.dataset.task);else s.delete(t.dataset.task);
+    day.done=Array.from(s);
+  }
+  else if(t.id==='qTopic')day.quiz.topic=t.value;
+  else if(t.id==='qScore')day.quiz.score=num(t.value);
+  else if(t.id==='qTotal')day.quiz.total=num(t.value);
+  else if(t.id==='mName')day.mock.name=t.value;
+  else if(t.id==='mScore')day.mock.score=num(t.value);
+  else if(t.id==='mTotal')day.mock.total=num(t.value);
+  else if(t.id==='mNotes')day.mock.notes=t.value;
+  else if(t.id==='notes')day.notes=t.value;
+  else return;
+  changed();
+});
+
+document.addEventListener('click',function(e){
+  var t=e.target.closest('button');
+  if(!t)return;
+  if(t.dataset.add!==undefined){
+    var input=$('#hours');
+    var v=Math.max(0,Math.min(24,Math.round(((num(input.value)||0)+parseFloat(t.dataset.add))*100)/100));
+    input.value=v;
+    input.dispatchEvent(new Event('input',{bubbles:true}));
+  }else if(t.dataset.nav!==undefined){
+    selected=clampSel(fmt(addDays(parse(selected),parseInt(t.dataset.nav,10))));
+    renderDay();renderSheet();
+  }else if(t.dataset.today!==undefined){
+    selected=clampSel(todayStr());
+    renderDay();renderSheet();
+  }else if(t.dataset.day){
+    selected=t.dataset.day;
+    renderDay();renderSheet();
+    var sel=$('.bub.sel');
+    if(sel)sel.focus({preventScroll:true});
+    if(window.matchMedia('(max-width: 919px)').matches){
+      $('#day').scrollIntoView({block:'start'});
+    }
+  }else if(t.dataset.rm){
+    state.routine=state.routine.filter(function(r){return r.id!==t.dataset.rm;});
+    save();renderRoutineEdit();renderDay();
+  }
+});
+
+function addTask(){
+  var inp=$('#newTask'),label=inp.value.trim();
+  if(!label)return;
+  state.routine.push({id:'r'+Date.now(),label:label});
+  inp.value='';
+  save();renderRoutineEdit();renderDay();
+}
+$('#addTask').addEventListener('click',addTask);
+$('#newTask').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();addTask();}});
+
+$('#startDate').addEventListener('change',function(e){
+  if(!isDateStr(e.target.value))return;
+  state.start=e.target.value;
+  selected=clampSel(selected);
+  save();renderAll();
+});
+$('#examDate').addEventListener('change',function(e){
+  state.exam=isDateStr(e.target.value)?e.target.value:'';
+  save();renderHeader();renderSheet();
+});
+
+function backupMsg(m){$('#backupMsg').textContent=m;}
+$('#showBackup').addEventListener('click',function(){
+  var ta=$('#backup');
+  ta.value=JSON.stringify(state);
+  ta.focus();ta.select();
+  backupMsg('Backup text is ready. Copy it and keep it somewhere safe.');
+});
+$('#copyBackup').addEventListener('click',function(){
+  var ta=$('#backup');
+  if(!ta.value)ta.value=JSON.stringify(state);
+  ta.focus();ta.select();
+  var ok=false;
+  try{ok=document.execCommand('copy');}catch(e){}
+  if(!ok&&navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(ta.value).then(function(){backupMsg('Copied.');},function(){backupMsg('Could not copy automatically. The text is selected, so copy it by hand.');});
+    return;
+  }
+  backupMsg(ok?'Copied.':'Could not copy automatically. The text is selected, so copy it by hand.');
+});
+$('#restoreBackup').addEventListener('click',function(){
+  var raw=$('#backup').value.trim();
+  if(!raw){backupMsg('Paste your backup text into the box first.');return;}
+  try{
+    var parsed=JSON.parse(raw);
+    if(!parsed||typeof parsed!=='object'||typeof parsed.days!=='object')throw new Error('bad');
+    state=normalize(parsed);
+    selected=clampSel(todayStr());
+    save();syncSettings();renderAll();
+    backupMsg('Restored.');
+  }catch(e){
+    backupMsg('That text is not a valid backup. Nothing was changed.');
+  }
+});
+var resetTimer=null;
+$('#reset').addEventListener('click',function(){
+  var b=$('#reset');
+  if(!resetTimer){
+    b.textContent='Click again to erase everything';
+    resetTimer=setTimeout(function(){resetTimer=null;b.textContent='Erase all data';},4000);
+  }else{
+    clearTimeout(resetTimer);resetTimer=null;
+    b.textContent='Erase all data';
+    state=fresh();
+    selected=clampSel(todayStr());
+    save();syncSettings();renderAll();
+    backupMsg('All data erased.');
+  }
+});
+
+syncSettings();
+renderAll();
+})();
+</script>
+</body>
+</html>
